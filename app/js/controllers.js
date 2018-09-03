@@ -251,7 +251,7 @@ alertaControllers.controller('AlertListController', ['$scope', '$route', '$locat
       if ($scope.autoRefresh) {
         refresh();
       }
-      timer = $timeout(refreshWithTimeout, 5000);
+      timer = $timeout(refreshWithTimeout, config.refresh_interval || 5000);
     };
     var timer = $timeout(refreshWithTimeout, 200);
 
@@ -306,8 +306,10 @@ alertaControllers.controller('AlertListController', ['$scope', '$route', '$locat
         } else {
           $scope.bulkAlerts.push(alert.id);
         }
-      } else {
+      } else if(!$event.ctrlKey){
         $location.url('/alert/' + alert.id);
+    } else if($event.ctrlKey) {
+        window.open('/#/alert' + alert.id, '_blank');
       }
     };
 
@@ -371,12 +373,20 @@ alertaControllers.controller('AlertListController', ['$scope', '$route', '$locat
       $route.reload();
     };
 
+    $scope.bulkOpenTabAlert = function(ids) {
+      angular.forEach(ids, function(id) {
+        window.open('/#/alert/' + id, '_blank');
+      });
+    };
+
     $scope.shortTime = config.dates && config.dates.shortTime || 'HH:mm';
     $scope.mediumDate = config.dates && config.dates.mediumDate || 'EEE d MMM HH:mm';
   }]);
 
 alertaControllers.controller('AlertDetailController', ['$scope', '$route', '$routeParams', '$location', '$auth', 'config', 'Alert',
   function($scope, $route, $routeParams, $location, $auth, config, Alert){
+
+    var ackComment = config.ack_comment || false;
 
     var byUser = '';
     if ($auth.isAuthenticated()) {
@@ -419,7 +429,13 @@ alertaControllers.controller('AlertDetailController', ['$scope', '$route', '$rou
     };
 
     $scope.ackAlert = function(id) {
-      Alert.action({id: id}, {action: 'ack', text: 'status change via console' + byUser}, function(data) {
+      if (ackComment) {
+        var ack_message = prompt("Please enter ack message", "");
+      } else {
+        var ack_message = 'status change via console';
+      }
+  
+      Alert.action({id: id}, {action: 'ack', text: ack_message + byUser}, function(data) {
         $route.reload();
       });
     };
@@ -577,7 +593,7 @@ alertaControllers.controller('AlertTop10Controller', ['$scope', '$location', '$t
       if ($scope.autoRefresh) {
         refresh();
       }
-      timer = $timeout(refreshWithTimeout, 5000);
+      timer = $timeout(refreshWithTimeout, config.refresh_interval || 5000);
     };
     var timer = $timeout(refresh, 200);
 
@@ -718,6 +734,12 @@ alertaControllers.controller('AlertWatchController', ['$scope', '$route', '$loca
         });
       });
       $route.reload();
+    };
+
+    $scope.bulkOpenTabAlert = function(ids) {
+      angular.forEach(ids, function(id) {
+        window.open('/#/alert/' + id, '_blank');
+      });
     };
 
     $scope.shortTime = config.dates && config.dates.shortTime || 'HH:mm';
