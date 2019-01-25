@@ -100,12 +100,12 @@
         <input class="form-control" id="input-event" placeholder="Event" ng-model="event" name="event"/>
       </div>
       <div class="form-group" ng-show="option == 'tags'">
-        <input class="form-control" id="input-tags" placeholder="Tags" ng-model="tags" name="tags"/>
+        <input class="form-control" id="input-tags" placeholder="Tags (comma-separated)" ng-model="tags" name="tags"/>
       </div>
       <div class="form-group">
         <input class="form-control" type="text" id="text" placeholder="Reason" ng-model="text" name="text" required />
       </div>
-      <button ng-disabled="!hasPermission('write:blackouts')" type="button" class="btn btn-primary" ng-click="createBlackout(env || environment,service,resource,event,group,tags,customer,start,end,text)">Blackout</button>
+      <button ng-disabled="!hasPermission('write:blackouts') && authRequired" type="button" class="btn btn-primary" ng-click="createBlackout(env || environment,service,resource,event,group,tags,customer,start,end,text)">Blackout</button>
         </div>
     </form>
   </div>

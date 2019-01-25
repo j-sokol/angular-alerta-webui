@@ -1,0 +1,13 @@
+<div class="container">
+
+  <p></p>
+  <div class="container" ng-show="message">
+    <div class="alert alert-danger text-center" role="alert" ng-show="error">
+      <strong>{{ error }}</strong> {{ message }}
+    </div>
+    <div class="alert alert-success text-center" role="alert" ng-hide="error">
+      <strong>Thanks!</strong> {{ message }}
+    </div>
+  </div>
+
+</div>

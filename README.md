@@ -1,37 +1,42 @@
-Alerta Web UI 3.0
+Alerta Web UI 6.0
 =================
 
-Version 3.0 of the alerta dashboard is an [AngularJS](http://angularjs.org/) web app that uses client-side templating.
-
-It replaces alerta dashboard [version 2.0](https://github.com/alerta/alerta-dashboard) which still works, but is no longer under active development.
-
-Example
--------
+Version 6.0 of the Alerta dashboard is an [AngularJS](http://angularjs.org/) web app that uses client-side templating.
 
 ![dashboard](/docs/images/alerta-webui-v3.png?raw=true&v=1)
 
+AngularJS is EOL
+----------------
+
+As of July 1, 2018 active development of AngularJS has stopped and version 1.7
+has entered in to a [Long Term Support Period which will last 3 years](https://blog.angular.io/stable-angularjs-and-long-term-support-7e077635ee9c).
+
+Alerta Web UI uses AngularJS 1.5 which was last updated in January 2017 and is
+not an LTS version so will not receive any security patches or updates.
+
+Migrating this application directly to Angular (2+) is not possible as Angular
+is a significantly different framework. A [rewrite of the web UI is in progress](https://github.com/alerta/beta.alerta.io)
+and as such, this version is now in "maintenance mode" and no further feature
+enhancements will be accepted. Only security patches or critical bug fixes
+will be considered from January 31, 2019.
 
 Installation
 ------------
 
 In production, copy the files under the `app/` directory to a web server.
 
-
 Configuration
 -------------
 
-By default, the dashboard will assume the alerta API endpoint is located at port 8080 on the same domain that the dashboard is served from. If the API endpoint is at a non-default location modify the `config.js` file:
+By default, the dashboard will assume the Alerta API endpoint is located at port 8080 on the same domain that the dashboard is served from. If the API endpoint is at a non-default location create a `config.json` file:
 
-    'use strict';
+```JSON
+{
+  "endpoint": "https://api.example.com"
+}
+```
 
-    angular.module('config', [])
-      .constant('config', {
-        'endpoint'    : "http://"+window.location.hostname+":8080",
-        'provider'    : "basic", // google, github, gitlab or basic
-        'client_id'   : "INSERT-CLIENT-ID-HERE"
-      });
-
-Also, if the Alerta API has set `AUTH_REQUIRED` to `True` then set the `provider` and `client_id` accordingly.
+All other settings are downloaded from the server when the client starts.
 
 Server Configuration
 --------------------
@@ -62,5 +67,4 @@ All dependencies are included, however, for reference they are:
 License
 -------
 
-Copyright (c) 2015 Nick Satterly. Available under the MIT License.
-
+Copyright (c) 2015-2018 Nick Satterly. Available under the MIT License.
